@@ -1,14 +1,19 @@
+import { useState } from "react"
+
 const TodoNew = (props) => {
     console.log(">>> check point: ", props)
+
+    const [inputValue, setInputValue] = useState("")
+
     const { addNewTodo } = props
 
     // addNewTodo("Alan");
     const handleClick = () => {
-        alert("click me")
+        console.log(">>> check valueInput: ", inputValue)
     }
 
     const handleOnChange = (name) => {
-        console.log(">>> handleOnChange", name)
+        setInputValue(name)
     }
     return (
         <div className='todo-new'>
