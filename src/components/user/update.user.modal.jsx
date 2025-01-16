@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Input, notification, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { updateUserAPI } from "../../services/api.service";

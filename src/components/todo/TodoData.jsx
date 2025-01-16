@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-key */
 const TodoData = (props) => {
     // console.log(">>> check props: ", props)
     const { todoList, deleteTodo } = props;

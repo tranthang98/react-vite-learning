@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { notification, Popconfirm, Table } from 'antd';
 import UpdateUserModal from './update.user.modal';

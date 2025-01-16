@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Input, Button, notification, Modal } from "antd";
 import { useState } from "react";
 import { createUserAPI } from "../../services/api.service";
