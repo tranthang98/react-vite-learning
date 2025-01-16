@@ -1,5 +1,7 @@
-import { Button, Drawer } from "antd";
+import { Button, Drawer, notification } from "antd";
+import { useState } from "react";
 import { createUseStyles } from "react-jss";
+import { handleUploadFile, updateUserAvatarAPI } from "../../services/api.service";
 
 const useStyles = createUseStyles({
   drawerContent: {
@@ -27,18 +29,73 @@ const useStyles = createUseStyles({
     textAlign: "center",
   },
   avatarImage: {
-    borderRadius: "8px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     display: "block",
-    margin: "0 auto",
+    margin: "0 auto 15px",
     width: "150x",
     height: "100px",
   },
 });
 
 const ViewUserDetail = (props) => {
-  const { dataDetail, setDataDetail, isDetailOpen, setIsDetailOpen } = props;
+  const { dataDetail, setDataDetail, isDetailOpen, setIsDetailOpen, loadUser } = props;
   const classes = useStyles();
+
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [preview, setPreview] = useState(null)
+
+  const hanldeOnchangeFile = (event) => {
+    if (!event.target.files || event.target.files.length === 0) {
+      setSelectedFile(null);
+      setPreview(null);
+      return;
+    }
+
+    // I've kept this example simple by using the first image instead of multiple
+    const file = event.target.files[0];
+
+    if (file) {
+      setSelectedFile(file);
+      setPreview(URL.createObjectURL(file))
+    }
+  }
+
+  const handleUpdateUserAvatar = async () => {
+    // step 1: upload file
+    const resUpload = await handleUploadFile(selectedFile, "avatar");
+
+    if (resUpload.data) {
+      // success
+      const newAvatar = resUpload.data.fileUploaded;
+      // step 2: update user
+      const resUpdateAvatar = await updateUserAvatarAPI(newAvatar, dataDetail._id, dataDetail.fullName, dataDetail.phone);
+
+      if (resUpdateAvatar.data) {
+        setIsDetailOpen(false);
+        setSelectedFile(null);
+        setPreview(null);
+        await loadUser();
+
+        notification.success({
+          message: "Update user avatar",
+          description: "Cập nhật thành công"
+        })
+
+      } else {
+        notification.error({
+          message: "Error upload avatar",
+          description: JSON.stringify(resUpdateAvatar.message)
+        })
+      }
+
+    } else {
+      // failed
+      notification.error({
+        message: "Error upload file",
+        description: JSON.stringify(resUpload.message)
+      })
+    }
+  }
 
   return (
     <Drawer
@@ -80,9 +137,25 @@ const ViewUserDetail = (props) => {
             }}>
               Upload Avatar
             </label>
-            <input type="file" hidden id="btnUpload" />
+            <input
+              type="file" hidden id="btnUpload"
+              // onChange={hanldeOnchangeFile}
+              onChange={(event) => hanldeOnchangeFile(event)}
+            />
           </div>
-          {/* <Button type="primary">Upload Avatar</Button> */}
+          {preview &&
+            <>
+              <div className={classes.avatarContainer}>
+                <img
+                  className={classes.avatarImage}
+                  src={preview}
+                />
+              </div>
+              <Button type="primary"
+                onClick={handleUpdateUserAvatar}
+              >Save</Button>
+            </>
+          }
         </div>
       ) : (
         <p>Không có dữ liệu</p>
