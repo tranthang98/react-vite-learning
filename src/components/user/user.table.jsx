@@ -1,17 +1,21 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { notification, Popconfirm, Table } from 'antd';
 import UpdateUserModal from './update.user.modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ViewUserDetail from './view.user.detail';
 import { deleteUserAPI } from '../../services/api.service';
 
 const UserTable = (props) => {
-    const { dataUsers, loadUser , current, setCurrent, pageSize, setPageSize, total} = props;
+    const { dataUsers, loadUser, current, setCurrent, pageSize, setPageSize, total } = props;
 
     const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
     const [isDetailOpen, setIsDetailOpen] = useState(false);
     const [dataUpdate, setDataUpdate] = useState(null)
     const [dataDetail, setDataDetail] = useState(null)
+
+    useEffect(() => {
+        loadUser();
+    }, [current, pageSize])
 
     const handleDeleteUser = async (id) => {
         const res = await deleteUserAPI(id);
@@ -20,7 +24,11 @@ const UserTable = (props) => {
                 message: "Delete user",
                 description: "Xóa user thành công"
             })
-            await loadUser();
+            if ((total - 1) % pageSize === 0) {
+                setCurrent(current - 1);
+            } else {
+                await loadUser();
+            }
         } else {
             notification.error({
                 message: "Error delete user",
@@ -37,7 +45,7 @@ const UserTable = (props) => {
                 console.log(">>> check index: ", index);
 
                 return (
-                    <>{index + 1}</>
+                    <>{(current - 1) * pageSize + index + 1}</>
                 )
             }
         },
@@ -93,6 +101,18 @@ const UserTable = (props) => {
         }
     ];
 
+    const onChange = (pagination, filters, sorter, extra) => {
+        console.log(">>> check ", { pagination, filters, sorter, extra });
+        if (pagination && pagination.current && +pagination.current !== current) {
+            setCurrent(+pagination.current) //"5" => 5
+        }
+        if (pagination && pagination.pageSize && +pagination.pageSize !== pageSize) {
+            setPageSize(+pagination.pageSize) //"5" => 5
+        }
+        setCurrent(pagination.current);
+        setPageSize(pagination.pageSize);
+    }
+
     return (
         <>
             <Table
@@ -102,7 +122,7 @@ const UserTable = (props) => {
                 pagination={{
                     current: current,
                     pageSize: pageSize,
-                    showSizeChanger: false,
+                    showSizeChanger: true,
                     total: total,
                     showTotal: (total, range) => {
                         return (
@@ -112,6 +132,7 @@ const UserTable = (props) => {
                         )
                     }
                 }}
+                onChange={onChange}
             />
             <UpdateUserModal
                 isModalUpdateOpen={isModalUpdateOpen}
