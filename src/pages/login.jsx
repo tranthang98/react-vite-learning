@@ -1,27 +1,25 @@
-import { Button, Checkbox, Col, Divider, Form, Input, notification, Row } from "antd";
+import { Button, Checkbox, Col, Divider, Form, Input, message, notification, Row } from "antd";
 import { loginUserAPI } from "../services/api.service";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import { useState } from "react";
 
 const LoginPage = () => {
 
     let navigate = useNavigate();
     const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false);
 
     const onFinish = async (values) => {
         console.log(values);
-
+        setLoading(true);
         const res = await loginUserAPI(
             values.email,
-            values.password,
-            1000
+            values.password
         );
 
         if (res.data) {
-            notification.success({
-                message: "Login user",
-                description: "Đăng nhập user thành công"
-            })
+            message.success("Đăng nhập user thành công");
             navigate("/");
         } else {
             notification.error({
@@ -29,6 +27,7 @@ const LoginPage = () => {
                 description: JSON.stringify(res.message)
             })
         }
+        setLoading(false);
     };
 
     return (
@@ -42,6 +41,7 @@ const LoginPage = () => {
                 }}>
                     <legend>Đăng Nhập</legend>
                     <Form
+                        form={form}
                         name="basic"
                         layout="vertical"
                         style={{
@@ -88,7 +88,10 @@ const LoginPage = () => {
                                 justifyContent: "space-between",
                                 alignItems: "center"
                             }}>
-                                <Button type="primary" onClick={() => form.submit()}>
+                                <Button
+                                    loading={loading}
+                                    type="primary"
+                                    onClick={() => form.submit()}>
                                     Login
                                 </Button>
                                 <Link to="/">Go to homepage <ArrowRightOutlined /></Link>
