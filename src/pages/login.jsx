@@ -10,10 +10,9 @@ const LoginPage = () => {
     let navigate = useNavigate();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const { setUser } = useContext(AuthContext);
+    // const { setUser } = useContext(AuthContext);
 
     const onFinish = async (values) => {
-        console.log(values);
         setLoading(true);
         const res = await loginUserAPI(
             values.email,
@@ -23,7 +22,7 @@ const LoginPage = () => {
         if (res.data) {
             message.success("Đăng nhập user thành công");
             localStorage.setItem("access_token", res.data.access_token);
-            setUser(res.data.user);
+            // setUser(res.data.user);
             navigate("/");
         } else {
             notification.error({
@@ -84,7 +83,9 @@ const LoginPage = () => {
                                 },
                             ]}
                         >
-                            <Input.Password />
+                            <Input.Password onKeyDown={(event) => {
+                                if (event.key === 'Enter') form.submit();
+                            }} />
                         </Form.Item>
                         <Form.Item>
                             <div style={{

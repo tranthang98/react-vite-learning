@@ -1,8 +1,6 @@
 import { useState } from "react"
 
 const TodoNew = (props) => {
-    console.log(">>> check point: ", props)
-
     const [inputValue, setInputValue] = useState("")
 
     const { addNewTodo } = props

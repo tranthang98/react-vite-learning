@@ -1,5 +1,4 @@
 const TodoData = (props) => {
-    // console.log(">>> check props: ", props)
     const { todoList, deleteTodo } = props;
     // const name = props.name;
     // const age = props.age;
