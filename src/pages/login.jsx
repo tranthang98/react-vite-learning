@@ -2,13 +2,15 @@ import { Button, Checkbox, Col, Divider, Form, Input, message, notification, Row
 import { loginUserAPI } from "../services/api.service";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRightOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../components/context/auth.context";
 
 const LoginPage = () => {
 
     let navigate = useNavigate();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
+    const { setUser } = useContext(AuthContext);
 
     const onFinish = async (values) => {
         console.log(values);
@@ -20,6 +22,8 @@ const LoginPage = () => {
 
         if (res.data) {
             message.success("Đăng nhập user thành công");
+            localStorage.setItem("access_token", res.data.access_token);
+            setUser(res.data.user);
             navigate("/");
         } else {
             notification.error({

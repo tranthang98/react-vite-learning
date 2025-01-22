@@ -42,8 +42,6 @@ const UserTable = (props) => {
             title: 'STT',
             dataIndex: '_id',
             render: (_, record, index) => {
-                console.log(">>> check index: ", index);
-
                 return (
                     <>{(current - 1) * pageSize + index + 1}</>
                 )

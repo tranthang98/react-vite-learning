@@ -1,9 +1,17 @@
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
 import { AuditOutlined, HomeOutlined, SettingOutlined, UsergroupAddOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../context/auth.context';
 
 const Header = () => {
+
+    const [current, setCurrent] = useState('');
+
+    const { user } = useContext(AuthContext);
+
+    console.log(">>> check data: ", user);
+
 
     const items = [
         {
@@ -42,7 +50,6 @@ const Header = () => {
         },
     ];
 
-    const [current, setCurrent] = useState('');
     const onClick = (e) => {
         console.log('click ', e);
         setCurrent(e.key);
@@ -54,7 +61,7 @@ const Header = () => {
             selectedKeys={[current]}
             mode="horizontal"
             items={items}
-            style={{display: "flex"}}
+            style={{ display: "flex" }}
         />
     )
 }
