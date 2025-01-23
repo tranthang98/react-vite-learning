@@ -7,15 +7,11 @@ export default function ErrorPage() {
 
   return (
     <Result
-      status="403"
+      status="404"
       title="Oops!"
       subTitle={error.statusText || error.message}
       extra={<Button type="primary">
-        <Link
-          to="/"
-          onMouseEnter={(e) => (e.target.style.backgroundColor = "#0056b3")}
-          onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
-        >
+        <Link to="/">
           Back to homepage
         </Link>
       </Button>}
