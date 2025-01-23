@@ -2,8 +2,7 @@ import { Button, Checkbox, Col, Divider, Form, Input, message, notification, Row
 import { loginUserAPI } from "../services/api.service";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRightOutlined } from "@ant-design/icons";
-import { useContext, useState } from "react";
-import { AuthContext } from "../components/context/auth.context";
+import { useState } from "react";
 
 const LoginPage = () => {
 
