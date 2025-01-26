@@ -4,6 +4,7 @@ import { createUseStyles } from "react-jss";
 import { handleUploadFile, updateBookAPI } from "../../services/api.service";
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
+import BookCarousel from "./book.slider";
 
 const useStyles = createUseStyles({
   drawerContent: {
@@ -119,7 +120,7 @@ const ViewBookDetail = (props) => {
     >
       {dataDetail ? (
         <div className={classes.drawerContent}>
-          {dataDetail.slider && dataDetail.slider.length > 0 &&
+          {/* {dataDetail.slider && dataDetail.slider.length > 0 &&
             <div className="slide-container">
               <Slide>
                 {dataDetail.slider.map((slideImage, index) => {
@@ -133,6 +134,9 @@ const ViewBookDetail = (props) => {
                 )}
               </Slide>
             </div>
+          } */}
+          {dataDetail.slider && dataDetail.slider.length > 0 &&
+            <BookCarousel image={dataDetail.slider} />
           }
           <div className={classes.divider}></div>
           <p className={classes.paragraph}>Id: {dataDetail._id}</p>
