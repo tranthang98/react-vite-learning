@@ -106,8 +106,6 @@ const UserTable = (props) => {
         if (pagination && pagination.pageSize && +pagination.pageSize !== pageSize) {
             setPageSize(+pagination.pageSize) //"5" => 5
         }
-        setCurrent(pagination.current);
-        setPageSize(pagination.pageSize);
     }
 
     return (
