@@ -48,7 +48,7 @@ const divStyle = {
   height: '500px'
 }
 
-const ViewBookDetail = (props) => {
+const BookDetail = (props) => {
   const { dataDetail, setDataDetail, isDetailOpen, setDetailOpen, loadBook } = props;
   const classes = useStyles();
 
@@ -153,7 +153,7 @@ const ViewBookDetail = (props) => {
           <div className={classes.divider}></div>
           <p className={classes.paragraph}>Thể loại: {dataDetail.category}</p>
           <div className={classes.divider}></div>
-          <p className={classes.paragraph}>Thumbnail:</p>
+          <p className={classes.paragraph}>Ảnh thumbnail:</p>
           <div className={classes.bookContainer}>
             <img
               className={classes.bookImage}
@@ -200,4 +200,4 @@ const ViewBookDetail = (props) => {
   );
 };
 
-export default ViewBookDetail;
+export default BookDetail;

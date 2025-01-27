@@ -1,12 +1,31 @@
-import { Table } from "antd"
-import ViewBookDetail from "./view.book.detail";
-import { useState } from "react";
+import { Button, Table } from "antd"
+import BookDetail from "./book.detail";
+import { useEffect, useState } from "react";
+import { fetchAllBookAPI } from "../../services/api.service";
+import CreateBookControl from "./create.book.control";
 
-const BookTable = (props) => {
+const BookTable = () => {
 
-  const { dataBooks, current, setCurrent, pageSize, setPageSize, total, loadBook } = props
-  const [dataDetail, setDataDetail] = useState(null)
-  const [isDetailOpen, setDetailOpen] = useState(null)
+  const [dataBooks, setDataBooks] = useState([]);
+  const [current, setCurrent] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    loadBook();
+  }, [current, pageSize])
+
+  const loadBook = async () => {
+    const res = await fetchAllBookAPI(current, pageSize);
+    if (res.data) {
+      setDataBooks(res.data.result);
+      setTotal(res.data.meta.total);
+    }
+  }
+
+  const [dataDetail, setDataDetail] = useState(null);
+  const [isDetailOpen, setDetailOpen] = useState(null);
+  const [isCreateOpen, setCreateOpen] = useState(false)
 
   const columns = [
     {
@@ -81,6 +100,12 @@ const BookTable = (props) => {
 
   return (
     <>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h3>Table Book</h3>
+        <Button
+          onClick={() => setCreateOpen(true)}
+          type="primary"> Create Book </Button>
+      </div>
       <Table
         columns={columns}
         dataSource={dataBooks}
@@ -100,12 +125,17 @@ const BookTable = (props) => {
         }}
         onChange={onChange}
       />
-      <ViewBookDetail
+      <BookDetail
         loadBook={loadBook}
         dataDetail={dataDetail}
         setDataDetail={setDataDetail}
         isDetailOpen={isDetailOpen}
         setDetailOpen={setDetailOpen}
+      />
+      <CreateBookControl
+        loadBook={loadBook}
+        isCreateOpen={isCreateOpen}
+        setCreateOpen={setCreateOpen}
       />
     </>
   )
