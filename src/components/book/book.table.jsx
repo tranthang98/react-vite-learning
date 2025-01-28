@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { fetchAllBookAPI } from "../../services/api.service";
 import CreateBookControl from "./create.book.control";
 import CreateBookUncontrol from "./create.book.uncontrol";
+import { EditOutlined } from "@ant-design/icons";
+import UpdateBookControl from "./update.book.control";
 
 const BookTable = () => {
 
@@ -26,7 +28,10 @@ const BookTable = () => {
 
   const [dataDetail, setDataDetail] = useState(null);
   const [isDetailOpen, setDetailOpen] = useState(null);
-  const [isCreateOpen, setCreateOpen] = useState(false)
+  const [isCreateOpen, setCreateOpen] = useState(false);
+
+  const [dataUpdate, setDataUpdate] = useState(null);
+  const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
 
   const columns = [
     {
@@ -86,6 +91,21 @@ const BookTable = () => {
       title: 'Thể loại',
       dataIndex: 'category',
     },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_, record) => (
+        <div style={{ display: "flex", gap: "20px" }}>
+          <EditOutlined
+            onClick={() => {
+              setDataUpdate(record);
+              setIsModalUpdateOpen(true);
+            }}
+            style={{ cursor: "pointer", color: "orange" }}
+          />
+        </div>
+      )
+    }
   ];
 
   const onChange = (pagination, filters, sorter, extra) => {
@@ -142,6 +162,13 @@ const BookTable = () => {
         loadBook={loadBook}
         isCreateOpen={isCreateOpen}
         setCreateOpen={setCreateOpen}
+      />
+      <UpdateBookControl
+        loadBook={loadBook}
+        dataUpdate={dataUpdate}
+        setDataUpdate={setDataUpdate}
+        isModalUpdateOpen={isModalUpdateOpen}
+        setIsModalUpdateOpen={setIsModalUpdateOpen}
       />
     </>
   )

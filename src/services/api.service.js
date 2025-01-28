@@ -92,10 +92,10 @@ const fetchAllBookAPI = (current, pageSize) => {
   return axios.get(URL_BACKEND);
 }
 
-const updateBookAPI = (_id, thumbnail, mainText, price, sold, quantity, author, category) => {
+const updateBookAPI = (id, thumbnail, mainText, price, sold, quantity, author, category) => {
   const URL_BACKEND = "/api/v1/book";
   const data = {
-    _id: _id,
+    _id: id,
     thumbnail: thumbnail,
     mainText: mainText,
     price: price,
@@ -120,9 +120,23 @@ const createBookAPI = (thumbnail, mainText, price, quantity, author, category) =
   return axios.post(URL_BACKEND, data);
 }
 
+const updateBookThumbnailAPI = (id, newThumbnail, mainText, price, quantity, author, category) => {
+  const URL_BACKEND = "/api/v1/book";
+  const data = {
+    _id: id,
+    thumbnail: newThumbnail,
+    mainText: mainText,
+    price: price,
+    quantity: quantity,
+    author: author,
+    category: category,
+  }
+  return axios.put(URL_BACKEND, data);
+}
+
 export {
   createUserAPI, updateUserAPI, fetchAllUserAPI,
   deleteUserAPI, handleUploadFile, updateUserAvatarAPI,
   registerUserAPI, loginUserAPI, getAccountAPI, logOutAPI,
-  fetchAllBookAPI, updateBookAPI, createBookAPI
+  createBookAPI, fetchAllBookAPI, updateBookAPI, updateBookThumbnailAPI
 }
