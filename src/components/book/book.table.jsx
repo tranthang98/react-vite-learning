@@ -1,6 +1,6 @@
 import { Button, notification, Popconfirm, Table } from "antd"
 import BookDetail from "./book.detail";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { deleteBookAPI, fetchAllBookAPI } from "../../services/api.service";
 import CreateBookControl from "./create.book.control";
 import CreateBookUncontrol from "./create.book.uncontrol";
@@ -15,24 +15,33 @@ const BookTable = () => {
   const [pageSize, setPageSize] = useState(5);
   const [total, setTotal] = useState(0);
 
-  useEffect(() => {
-    loadBook();
-  }, [current, pageSize])
-
-  const loadBook = async () => {
-    const res = await fetchAllBookAPI(current, pageSize);
-    if (res.data) {
-      setDataBooks(res.data.result);
-      setTotal(res.data.meta.total);
-    }
-  }
-
   const [dataDetail, setDataDetail] = useState(null);
   const [isDetailOpen, setDetailOpen] = useState(null);
   const [isCreateOpen, setCreateOpen] = useState(false);
 
   const [dataUpdate, setDataUpdate] = useState(null);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
+
+  const [loadingTable, setLoadingTable] = useState(false);
+
+  // useEffect(() => {
+  //   loadBook();
+  // }, [current, pageSize])
+
+  // fix eslint by useCallback
+  const loadBook = useCallback(async () => {
+    setLoadingTable(true);
+    const res = await fetchAllBookAPI(current, pageSize);
+    if (res.data) {
+      setDataBooks(res.data.result);
+      setTotal(res.data.meta.total);
+    }
+    setLoadingTable(false);
+  }, [current, pageSize])
+
+  useEffect(() => {
+    loadBook();
+  }, [loadBook])
 
   const handleDeleteUser = async (id) => {
     const res = await deleteBookAPI(id);
@@ -176,6 +185,7 @@ const BookTable = () => {
           }
         }}
         onChange={onChange}
+        loading={loadingTable}
       />
       <BookDetail
         loadBook={loadBook}
