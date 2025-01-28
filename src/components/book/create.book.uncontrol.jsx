@@ -9,6 +9,7 @@ const CreateBookUncontrol = (props) => {
   const [preview, setPreview] = useState(null)
 
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmitBtn = async (values) => {
     if (!selectedFile) {
@@ -19,6 +20,7 @@ const CreateBookUncontrol = (props) => {
       return;
     }
 
+    setLoading(true);
     const resUpload = await handleUploadFile(selectedFile, "book");
     if (resUpload.data) {
       // success
@@ -46,6 +48,7 @@ const CreateBookUncontrol = (props) => {
         description: JSON.stringify(resUpload.message)
       })
     }
+    setLoading(false);
   }
 
   const resetAndCloseModal = () => {
@@ -76,6 +79,9 @@ const CreateBookUncontrol = (props) => {
       title="Create Book"
       open={isCreateOpen}
       onOk={() => form.submit()}
+      okButtonProps={{
+        loading: loading
+      }}
       onCancel={() => resetAndCloseModal()}
       maskClosable={false}
       okText={"CREATE"}

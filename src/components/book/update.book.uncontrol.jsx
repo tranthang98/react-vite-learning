@@ -9,6 +9,8 @@ const UpdateBookUncontrol = (props) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (dataUpdate && dataUpdate._id) {
       form.setFieldsValue({
@@ -39,6 +41,7 @@ const UpdateBookUncontrol = (props) => {
         description: JSON.stringify(res.message)
       })
     }
+    setLoading(false);
   }
 
   const handleSubmitBtn = async (values) => {
@@ -54,6 +57,7 @@ const UpdateBookUncontrol = (props) => {
     if (preview && !selectedFile) {
       newThumbnail = dataUpdate.thumbnail;
     } else {
+      setLoading(true);
       const resUpload = await handleUploadFile(selectedFile, "book");
       if (resUpload.data) {
         // success
@@ -64,6 +68,7 @@ const UpdateBookUncontrol = (props) => {
           message: "Error upload thumbnail",
           description: JSON.stringify(resUpload.message)
         })
+        setLoading(false);
         return;
       }
     }
@@ -72,7 +77,7 @@ const UpdateBookUncontrol = (props) => {
   }
 
   const hanldeOnchangeFile = (event) => {
-    
+
     if (!event.target.files || event.target.files.length === 0) {
       setSelectedFile(null);
       setPreview(null);
@@ -101,6 +106,9 @@ const UpdateBookUncontrol = (props) => {
       title="Update a Book"
       open={isModalUpdateOpen}
       onOk={() => form.submit()}
+      okButtonProps={{
+        loading: loading
+      }}
       onCancel={() => resetAndCloseModal()}
       maskClosable={false}
       okText={"UPDATE"}
