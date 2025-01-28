@@ -113,7 +113,7 @@ const UpdateBookControl = (props) => {
       onOk={() => handleSubmitBtn()}
       onCancel={() => resetAndCloseModal()}
       maskClosable={false}
-      okText={"SAVE"}
+      okText={"UPDATE"}
     >
       <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
         <div>

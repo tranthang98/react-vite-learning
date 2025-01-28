@@ -1,7 +1,5 @@
-import { Button, Drawer, notification } from "antd";
-import { useState } from "react";
+import { Drawer } from "antd";
 import { createUseStyles } from "react-jss";
-import { handleUploadFile, updateBookAPI } from "../../services/api.service";
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 import BookCarousel from "./book.slider";
@@ -54,62 +52,6 @@ const BookDetail = (props) => {
   const { dataDetail, setDataDetail, isDetailOpen, setDetailOpen, loadBook } = props;
   const classes = useStyles();
 
-  const [selectedFile, setSelectedFile] = useState(null)
-  const [preview, setPreview] = useState(null)
-
-  const hanldeOnchangeFile = (event) => {
-    if (!event.target.files || event.target.files.length === 0) {
-      setSelectedFile(null);
-      setPreview(null);
-      return;
-    }
-
-    // I've kept this example simple by using the first image instead of multiple
-    const file = event.target.files[0];
-
-    if (file) {
-      setSelectedFile(file);
-      setPreview(URL.createObjectURL(file))
-    }
-  }
-
-  const handleUpdateBookThumbnail = async () => {
-    // step 1: upload file
-    const resUpload = await handleUploadFile(selectedFile, "book");
-
-    if (resUpload.data) {
-      // success
-      const newBookThumbnail = resUpload.data.fileUploaded;
-      // step 2: update book
-      const resUpdateBook = await updateBookAPI(dataDetail._id, newBookThumbnail);
-
-      if (resUpdateBook.data) {
-        setDetailOpen(false);
-        setSelectedFile(null);
-        setPreview(null);
-        await loadBook();
-
-        notification.success({
-          message: "Update user thumbnail",
-          description: "Cập nhật thành công"
-        })
-
-      } else {
-        notification.error({
-          message: "Error upload thumbnail",
-          description: JSON.stringify(resUpdateBook.message)
-        })
-      }
-
-    } else {
-      // failed
-      notification.error({
-        message: "Error upload file",
-        description: JSON.stringify(resUpload.message)
-      })
-    }
-  }
-
   return (
     <Drawer
       width={"30vw"}
@@ -155,43 +97,16 @@ const BookDetail = (props) => {
           <div className={classes.divider}></div>
           <p className={classes.paragraph}>Thể loại: {dataDetail.category}</p>
           <div className={classes.divider}></div>
-          <p className={classes.paragraph}>Ảnh thumbnail:</p>
-          <div className={classes.bookContainer}>
-            <img
-              className={classes.bookImage}
-              src={`${import.meta.env.VITE_BACKEND_URL}/images/book/${dataDetail.thumbnail}`}
-              alt="Book Thumbnail"
-            />
-          </div>
-          <div>
-            <label htmlFor="btnUpload" style={{
-              display: "block",
-              width: "fit-content",
-              marginTop: "15px",
-              padding: "5px 10px",
-              background: "orange",
-              borderRadius: "5px",
-              cursor: "pointer"
-            }}>
-              Upload Thumbnail
-            </label>
-            <input
-              type="file" hidden id="btnUpload"
-              // onChange={hanldeOnchangeFile}
-              onChange={(event) => hanldeOnchangeFile(event)}
-            />
-          </div>
-          {preview &&
+          {dataDetail.thumbnail &&
             <>
+              <p className={classes.paragraph}>Ảnh thumbnail:</p>
               <div className={classes.bookContainer}>
                 <img
                   className={classes.bookImage}
-                  src={preview}
+                  src={`${import.meta.env.VITE_BACKEND_URL}/images/book/${dataDetail.thumbnail}`}
+                  alt="Book Thumbnail"
                 />
               </div>
-              <Button type="primary"
-                onClick={handleUpdateBookThumbnail}
-              >Save</Button>
             </>
           }
         </div>

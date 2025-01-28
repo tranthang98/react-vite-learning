@@ -6,6 +6,7 @@ import CreateBookControl from "./create.book.control";
 import CreateBookUncontrol from "./create.book.uncontrol";
 import { EditOutlined } from "@ant-design/icons";
 import UpdateBookControl from "./update.book.control";
+import UpdateBookUncontrol from "./update.book.uncontrol";
 
 const BookTable = () => {
 
@@ -163,7 +164,14 @@ const BookTable = () => {
         isCreateOpen={isCreateOpen}
         setCreateOpen={setCreateOpen}
       />
-      <UpdateBookControl
+      {/* <UpdateBookControl
+        loadBook={loadBook}
+        dataUpdate={dataUpdate}
+        setDataUpdate={setDataUpdate}
+        isModalUpdateOpen={isModalUpdateOpen}
+        setIsModalUpdateOpen={setIsModalUpdateOpen}
+      /> */}
+      <UpdateBookUncontrol
         loadBook={loadBook}
         dataUpdate={dataUpdate}
         setDataUpdate={setDataUpdate}
