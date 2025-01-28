@@ -33,6 +33,15 @@ const CreateBookControl = (props) => {
   }
 
   const handleSubmitBtn = async () => {
+
+    if (!selectedFile) {
+      notification.error({
+        message: "Error create book",
+        description: "Vui lòng upload ảnh thumbnail"
+      })
+      return;
+    }
+
     const resUpload = await handleUploadFile(selectedFile, "book");
     if (resUpload.data) {
       // success
@@ -86,46 +95,6 @@ const CreateBookControl = (props) => {
         okText={"CREATE"}
       >
         <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
-          {/* <Form
-            name="basic"
-            layout="vertical"
-          >
-            <Form.Item
-              label="Tiêu đề"
-              name="mainText"
-              rules={[
-                { required: true, message: "Vui lòng nhập vào tiêu đề!" },
-              ]}
-            >
-              <Input placeholder="Nhập vào tiêu đề" />
-            </Form.Item>
-            <Form.Item
-              label="Tác giả"
-              name="author"
-              rules={[
-                { required: true, message: "Vui lòng nhập vào tên tác giả!" },
-              ]}
-            >
-              <Input placeholder="Nhập vào tên tác giả" />
-            </Form.Item>
-
-            <Form.Item>
-              <div style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center"
-              }}>
-                <Button
-                  // loading={loading}
-                  type="primary"
-                  onClick={() => form.submit()}>
-                  Login
-                </Button>
-                <Link to="/">Go to homepage <ArrowRightOutlined /></Link>
-              </div>
-            </Form.Item>
-          </Form> */}
-
           <div>
             <span>Tiêu đề</span>
             <Input
@@ -196,6 +165,7 @@ const CreateBookControl = (props) => {
               type="file" hidden id="btnUpload"
               // onChange={hanldeOnchangeFile}
               onChange={(event) => hanldeOnchangeFile(event)}
+              onClick={(event) => event.target.value = null}
             />
           </div>
           {preview &&
