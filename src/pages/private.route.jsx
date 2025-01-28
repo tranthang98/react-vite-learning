@@ -22,8 +22,8 @@ const PrivateRoute = (props) => {
             title="Unauthorized!"
             subTitle={"Bạn cần đăng nhập để truy cập tài nguyên này."}
             extra={<Button type="primary">
-                <Link to="/login">
-                    <span>Login Now</span>
+                <Link to="/">
+                    <span>Back to homepage</span>
                 </Link>
             </Button>}
         />

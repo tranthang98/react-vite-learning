@@ -6,12 +6,12 @@ import ViewUserDetail from './view.user.detail';
 import { deleteUserAPI } from '../../services/api.service';
 
 const UserTable = (props) => {
-    const { dataUsers, loadUser, current, setCurrent, pageSize, setPageSize, total } = props;
+    const { dataUsers, loadUser, current, setCurrent, pageSize, setPageSize, total, loadingTable } = props;
 
     const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
     const [isDetailOpen, setIsDetailOpen] = useState(false);
-    const [dataUpdate, setDataUpdate] = useState(null)
-    const [dataDetail, setDataDetail] = useState(null)
+    const [dataUpdate, setDataUpdate] = useState(null);
+    const [dataDetail, setDataDetail] = useState(null);
 
     useEffect(() => {
         loadUser();
@@ -128,6 +128,7 @@ const UserTable = (props) => {
                     }
                 }}
                 onChange={onChange}
+                loading={loadingTable}
             />
             <UpdateUserModal
                 isModalUpdateOpen={isModalUpdateOpen}
