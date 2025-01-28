@@ -3,6 +3,7 @@ import BookDetail from "./book.detail";
 import { useEffect, useState } from "react";
 import { fetchAllBookAPI } from "../../services/api.service";
 import CreateBookControl from "./create.book.control";
+import CreateBookUncontrol from "./create.book.uncontrol";
 
 const BookTable = () => {
 
@@ -132,7 +133,12 @@ const BookTable = () => {
         isDetailOpen={isDetailOpen}
         setDetailOpen={setDetailOpen}
       />
-      <CreateBookControl
+      {/* <CreateBookControl
+        loadBook={loadBook}
+        isCreateOpen={isCreateOpen}
+        setCreateOpen={setCreateOpen}
+      /> */}
+      <CreateBookUncontrol
         loadBook={loadBook}
         isCreateOpen={isCreateOpen}
         setCreateOpen={setCreateOpen}

@@ -1,4 +1,4 @@
-import { Button, Form, Input, InputNumber, Modal, notification, Select } from "antd";
+import { Input, InputNumber, Modal, notification, Select } from "antd";
 import { useState } from "react";
 import { createBookAPI, handleUploadFile } from "../../services/api.service";
 
@@ -11,7 +11,6 @@ const CreateBookControl = (props) => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [category, setCategory] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
 
   const [selectedFile, setSelectedFile] = useState(null)
   const [preview, setPreview] = useState(null)
@@ -33,7 +32,6 @@ const CreateBookControl = (props) => {
   }
 
   const handleSubmitBtn = async () => {
-
     if (!selectedFile) {
       notification.error({
         message: "Error create book",
@@ -46,7 +44,6 @@ const CreateBookControl = (props) => {
     if (resUpload.data) {
       // success
       const thumbnail = resUpload.data.fileUploaded;
-      console.log(">>> check data: ", thumbnail, mainText, price, quantity, author, category);
       const res = await createBookAPI(thumbnail, mainText, price, quantity, author, category)
       if (res.data) {
         notification.success({
@@ -68,8 +65,6 @@ const CreateBookControl = (props) => {
         description: JSON.stringify(resUpload.message)
       })
     }
-
-
   }
 
   const resetAndCloseModal = () => {
@@ -79,7 +74,6 @@ const CreateBookControl = (props) => {
     setPrice("");
     setQuantity("");
     setCategory("");
-    setThumbnail("");
     setSelectedFile(null);
     setPreview(null);
   }
@@ -170,7 +164,11 @@ const CreateBookControl = (props) => {
           </div>
           {preview &&
             <>
-              <div style={{ textAlign: "center", }}>
+              <div style={{
+                marginTop: "10px",
+                marginBottom: "15px",
+                height: "100px", width: "150px",
+              }}>
                 <img
                   style={{
                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",

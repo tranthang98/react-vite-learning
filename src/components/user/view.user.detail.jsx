@@ -26,7 +26,9 @@ const useStyles = createUseStyles({
     margin: "15px 0",
   },
   avatarContainer: {
-    textAlign: "center",
+    marginTop: "10px",
+    marginBottom: "15px",
+    height: "100px", width: "150px",
   },
   avatarImage: {
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
