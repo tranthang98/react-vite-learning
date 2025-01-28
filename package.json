@@ -19,6 +19,7 @@
     "antd": "5.18.1",
     "axios": "1.7.2",
     "base-react-vite-hoidanit": "file:",
+    "nprogress": "0.2.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-jss": "10.0.0-alpha.26",
